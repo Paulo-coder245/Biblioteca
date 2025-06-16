@@ -6,30 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('emprestimos', function (Blueprint $table) {
             $table->id();
-
-            // RELAÇÕES
-            $table->foreignId('usuario_id')->constrained()->onDelete('cascade');
-            $table->foreignId('livro_id')->constrained()->onDelete('cascade');
-
-
+            $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('livro_id');
             $table->enum('status_emprestimo', ['aprovado', 'devolvido', 'atrasado']);
             $table->date('data_emprestimo');
-            $table->date('data_devolucao');
+            $table->date('data_devolucao')->nullable();
             $table->timestamps();
+
+            $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('cascade');
+            $table->foreign('livro_id')->references('id')->on('livros')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('emprestimos');
     }
