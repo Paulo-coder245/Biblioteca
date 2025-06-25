@@ -8,17 +8,20 @@ use Illuminate\Http\Request;
 
 class LivroController extends Controller
 {
+    //METODO INDEX
     public function index()
     {
         $livros = Livro::with('usuario')->get();
         return view('livros.index', compact('livros'));
     }
 
+    //METODO CREATE
     public function create()
     {
         return view('livros.create');
     }
 
+    //METODO STORE
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,13 +36,16 @@ class LivroController extends Controller
         return redirect()->route('livros.create')->with('success', 'Livro cadastrado com sucesso!');
     }
 
+    //METODO SHOW (USADO PARA EXIBIR DETALHES DE UM LIVRO)
     public function show(string $id) { }
 
+    //METODO EDIT
     public function edit(Livro $livro)
     {
         return view('livros.edit', compact('livro'));
     }
 
+    //METODO UPDATE
     public function update(Request $request, Livro $livro)
     {
         $validated = $request->validate([
@@ -54,6 +60,7 @@ class LivroController extends Controller
         return redirect()->route('livros.index')->with('success', 'Livro atualizado com sucesso!');
     }
 
+    //METODO DESTROY
     public function destroy(Livro $livro)
     {
         $livro->delete();

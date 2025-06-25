@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 class EmprestimoController extends Controller
 {
+    //METODO INDEX
     public function index()
     {
         $emprestimos = Emprestimo::with(['usuario', 'livro'])->get();
         return view('emprestimos.index', compact('emprestimos'));
     }
 
+    //METODO CREATE
     public function create()
     {
         $usuarios = Usuario::all();
@@ -22,6 +24,7 @@ class EmprestimoController extends Controller
         return view('emprestimos.create', compact('usuarios', 'livros'));
     }
 
+    //METODO STORE
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,6 +42,7 @@ class EmprestimoController extends Controller
         return redirect()->route('emprestimos.index')->with('success', 'Empréstimo registrado com sucesso!');
     }
 
+    //METODO EDIT
     public function edit(Emprestimo $emprestimo)
     {
         $usuarios = Usuario::all();
@@ -46,6 +50,7 @@ class EmprestimoController extends Controller
         return view('emprestimos.edit', compact('emprestimo', 'usuarios', 'livros'));
     }
 
+    //METODO UPDATE
     public function update(Request $request, Emprestimo $emprestimo)
     {
         $validated = $request->validate([
@@ -65,6 +70,7 @@ class EmprestimoController extends Controller
         return redirect()->route('emprestimos.index')->with('success', 'Empréstimo atualizado com sucesso!');
     }
 
+    //METODO DESTROY
     public function destroy(Emprestimo $emprestimo)
     {
         $emprestimo->delete();

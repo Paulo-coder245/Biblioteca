@@ -16,31 +16,34 @@ class Emprestimo extends Model
         'data_devolucao',
     ];
 
-    // RELACIONAMENTO: Um empréstimo pertence a um usuário
+    // RELACIONAMENTO: UM EMPRÉSTIMO PERTENCE A UM USUÁRIO
     public function usuario()
     {
         return $this->belongsTo(Usuario::class);
     }
 
-    // RELACIONAMENTO: Um empréstimo pertence a um livro
+    // RELACIONAMENTO: UM EMPRÉSTIMO PERTENCE A UM LIVRO
     public function livro()
     {
         return $this->belongsTo(Livro::class);
     }
 
-    // Hook para atualizar o status do livro automaticamente
+    // ATUALIZA O STATUS DO LIVRO
     protected static function booted()
-    {
-        static::created(function ($emprestimo) {
-            if (in_array($emprestimo->status_emprestimo, ['aprovado', 'atrasado'])) {
-                $emprestimo->livro->update(['status_livro' => 'emprestado']);
-            }
-        });
+    {    static::created(function ($emprestimo) {
+        if (in_array($emprestimo->status_emprestimo, ['aprovado', 'atrasado'])) {
+            $emprestimo->livro->update(['status_livro' => 'emprestado']);
+        } elseif ($emprestimo->status_emprestimo === 'devolvido') {
+            $emprestimo->livro->update(['status_livro' => 'disponível']);
+        }
+    });
 
-        static::updated(function ($emprestimo) {
-            if (in_array($emprestimo->status_emprestimo, ['aprovado', 'atrasado'])) {
-                $emprestimo->livro->update(['status_livro' => 'emprestado']);
-            }
-        });
-    }
+    static::updated(function ($emprestimo) {
+        if (in_array($emprestimo->status_emprestimo, ['aprovado', 'atrasado'])) {
+            $emprestimo->livro->update(['status_livro' => 'emprestado']);
+        } elseif ($emprestimo->status_emprestimo === 'devolvido') {
+            $emprestimo->livro->update(['status_livro' => 'disponível']);
+        }
+    });
+}
 }

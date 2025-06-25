@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
+    // METODO CREATE
     public function create()
     {
         return view('usuarios.create');
     }
 
+    // METODO STORE
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -25,21 +27,27 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.create')->with('success', 'Usuário cadastrado com sucesso!');
     }
 
+    // METODO INDEX
     public function index()
     {
         $usuarios = Usuario::all();
         return view('usuarios.index', compact('usuarios'));
     }
+
+    // METODO DESTROY
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();
         return redirect()->route('usuarios.index')->with('success', 'Usuário excluído com sucesso!');
     }
+
+    // METODO EDIT
     public function edit(Usuario $usuario)
     {
         return view('usuarios.edit', compact('usuario'));
     }
 
+    // METODO UPDATE
     public function update(Request $request, Usuario $usuario)
     {
         $validated = $request->validate([

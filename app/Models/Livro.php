@@ -15,13 +15,13 @@ class Livro extends Model
         'status_livro',
     ];
 
-    // Livro pertence ao usuário
+    // RELACIONAMENTO COM USUÁRIOS (LIVRO PERTENCE A UM USUÁRIO, 1:1)
     public function usuario()
     {
         return $this->belongsTo(Usuario::class);
     }
 
-    // Livro tem vários empréstimos
+    //RELACIONAMENTO COM EMPRÉSTIMOS (LIVRO PODE TER MUITOS EMPRÉSTIMOS, 1:N)
     public function emprestimos()
     {
         return $this->hasMany(Emprestimo::class);
